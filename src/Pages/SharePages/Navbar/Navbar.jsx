@@ -1,12 +1,40 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import logo from '../../../assets/logo.svg';
+import { AuthContext } from '../../../Provider/Provider';
+import { Link } from 'react-router-dom';
+import SocialLogin from '../../Login/SocialLogin';
 
 const Navbar = () => {
+  const {user,logOut} =useContext(AuthContext);
+
+  const handleLogout=()=>{
+    logOut()
+    .then(result => {
+      console.log(result.user)
+      localStorage.removeItem('car-access-token');
+    })
+    .catch(error=>console.log(error))
+  }
+
+
     const navitems = <>
-     <li><a>Item 1</a></li>
+     <Link to="/"><li><a>Item 1</a></li></Link>
     
-    <li><a>Item 3</a></li>
-    <li><a>Item 3</a></li>
+    <li><a>Item 2</a></li>
+    <li><a>Item 2</a></li>
+    {user?  <>  <li onClick={handleLogout}><a>logout</a></li>
+       <Link to="/booking"><li ><a>booking</a></li></Link> 
+    
+    </> :
+    <Link to="/login">
+          <li><a>login</a></li>
+    </Link>
+   
+    
+    
+    }
+    
+    
     </>
     return (
         <div>

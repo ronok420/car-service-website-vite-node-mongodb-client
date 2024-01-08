@@ -1,10 +1,19 @@
 import React, { useContext } from 'react';
 import img from '../../../src/assets/images/login/login.svg';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Provider/Provider';
+import SocialLogin from './SocialLogin';
 
 const Login = () => {
   const {signIn} =useContext(AuthContext);
+  const location= useLocation();
+  const from =location.state?.from?.pathname || "/";
+  console.log(location);
+  const navigate= useNavigate();
+
+
+ 
+
     const handleLogin= (event)=>{
         event.preventDefault();
         const form =event.target;
@@ -15,6 +24,22 @@ const Login = () => {
         .then(rs=>{
           const user =rs.user;
           console.log(user);
+          navigate(from, {replace:true})
+          // const loggeduser ={
+          //   email:user.email
+          // }
+          // fetch('http://localhost:7000/jwt',{
+          //   method:'POST',
+          //   headers:{
+          //     'Content-type':'application/json'
+          //   },
+          //   body:JSON.stringify(loggeduser)
+          // })
+          // .then(res=>res.json())
+          // .then(data => {
+          //   console.log(data);
+          //   localStorage.setItem('car-access-token', data.token)
+          // })
 
         })
         .then(error=>{
@@ -52,7 +77,12 @@ const Login = () => {
 
               <input type="submit" value="Login" className="btn btn-primary"/>
               <p>new to car service?<Link className='text-3xl text-amber-600' to="/signup">SignUp</Link></p>
-            </form>
+             
+
+              
+            </form> 
+            <SocialLogin  
+            ></SocialLogin>
           </div>
         </div>
       </div>
